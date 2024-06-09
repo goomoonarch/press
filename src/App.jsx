@@ -1,9 +1,9 @@
-import { InputValue } from "./components/InputValue";
+import CreditSimulator from "./components/InputValue";
 
 function App() {
   return (
     <>
-    <InputValue />
+    <CreditSimulator />
     </>
   );
 }
