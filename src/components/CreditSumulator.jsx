@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const CreditSimulator = () => {
+export const CreditSimulator = () => {
   const [inputValue, setInputValue] = useState("");
   const [inputValueRaw, setInputValueRaw] = useState("");
   const [optionalAmount, setOptionalAmount] = useState("");
@@ -20,8 +20,23 @@ const CreditSimulator = () => {
   const [monthlyCuota, setMonthlyCuota] = useState("");
   const [weekelyCuota, setWeekelyCuota] = useState("");
 
+
+  //Admin mode
+  const [adminMode, setAdminMode] = useState(false);
+  const [phoneCost, setPhoneCost] = useState("");
+  const [restReturn, setRestReturn] = useState("");
+  const [capitalReturn, setCapitalReturn] = useState("");
+  const [brutalProfit, setBrutalProfit] = useState("");
+  const [phoneRisk, setPhoneRisk] = useState("");
+  const [agentPay, setAgentPay] = useState("");
+  const [interestPayToFlor, setInterestPayToFlor] = useState("");
+  const [realProfit, setRealProfit] = useState("");
+  const [monthlyProfit, setMonthlyProfit] = useState("");
+  const [weeklyProfit, setWeeklyProfit] = useState("");
+
   const tenPercent = 0.1;
   const monthlyInterest = 0.04;
+  const phoneExpense = 50000;
 
   const formatCOP = (value) => {
     if (!value) return "";
@@ -65,6 +80,15 @@ const CreditSimulator = () => {
     );
   };
 
+  const handlePhoneCost = (event) => {
+    const value = event.target.value.replace(/[^0-9]/g, "");
+    setPhoneCost(value);
+  };
+
+  const handleAdminMode = () => {
+    setAdminMode(true);
+  };
+
   const calculateResult = () => {
     const amount = parseInt(inputValueRaw, 10) || 0;
     const half = parseInt(halfAmountRaw, 10) || 0;
@@ -85,6 +109,15 @@ const CreditSimulator = () => {
     const weekelyInterest = monthlyInterestTab / 4;
     const monthlyCuota = payTotalCredit / installments;
     const weekelyCuota = monthlyCuota / 4;
+    const restReturn = phoneCost - halfAmountRaw - optionalAmountRaw;
+    const capitalReturn = restReturn / monthlyCuota;
+    const brutalProfit = phoneValue - phoneCost;
+    const phoneRisk = capitalToCredit * 0.25;
+    const agentPay = amount * 0.14;
+    const payInterestToFlor = restReturn * 0.0225 * installmentsValue;
+    const realProfit = brutalProfit - phoneRisk - agentPay - payInterestToFlor - phoneExpense;
+    const monthlyProfit = realProfit / installmentsValue;
+    const weeklyProfit = monthlyProfit / 4;
 
     setCapitalToCredit(formatCOP(capitalToCredit.toString()));
     setAllRiskSecure(formatCOP(allRiskSecure.toString()));
@@ -96,14 +129,26 @@ const CreditSimulator = () => {
     setWeekelyInterest(formatCOP(weekelyInterest.toString()));
     setMonthlyCuota(formatCOP(monthlyCuota.toString()));
     setWeekelyCuota(formatCOP(weekelyCuota.toString()));
+
+    //admin mode
+    setRestReturn(restReturn);
+    setCapitalReturn(capitalReturn);
+    setBrutalProfit(brutalProfit);
+    setPhoneRisk(phoneRisk);
+    setAgentPay(agentPay);
+    setInterestPayToFlor(payInterestToFlor);
+    setRealProfit(realProfit);
+    setMonthlyProfit(monthlyProfit);
+    setWeeklyProfit(weeklyProfit);
   };
 
   useEffect(() => {
     calculateResult();
-  }, [inputValueRaw, optionalAmountRaw, installmentsValue]);
+  }, [inputValueRaw, optionalAmountRaw, installmentsValue, phoneCost]);
 
   return (
-    <div>
+    <div className="flex flex-col items-center">
+      <button onClick={handleAdminMode}>Admin Mode</button>
       <div>
         <label htmlFor="amount">Monto de la compra:</label>
         <input
@@ -177,6 +222,61 @@ const CreditSimulator = () => {
           />
         )}
       </div>
+      {adminMode && (
+        <div>
+          <br />
+          <label htmlFor="cost">Costo:</label>
+          <input
+            type="text"
+            id="phonecost"
+            value={formatCOP(phoneCost)}
+            onChange={handlePhoneCost}
+            placeholder="Costo del teléfono en COP"
+          />
+          <div>
+            <label htmlFor="restunr">Faltante por recuperar:</label>
+            <input type="text" id="restReturn" value={formatCOP(restReturn)} readOnly />
+          </div>
+          <div>
+            <label htmlFor="capitalreturn">Retorno de capital: </label>
+            <input type="text" id="capitalreturn" value={capitalReturn.toFixed(2)} readOnly />
+          </div>
+          <br />
+          <div>
+            <label htmlFor="profit">Ganancia bruta: </label>
+            <input type="text" id="profit" value={formatCOP(brutalProfit)} readOnly />
+          </div>
+          <div>
+            <label htmlFor="phoneexpense">Gasto del teléfono: </label>
+            <input type="text" id="phoneexpense" value={formatCOP(phoneExpense)} readOnly />
+          </div>
+          <div>
+            <label htmlFor="phonerisk">Resgo de pérdida: </label>
+            <input type="text" id="phonerisk" value={formatCOP(phoneRisk)} readOnly />
+          </div>
+          <div>
+            <label htmlFor="agentpay">Pago agente: </label>
+            <input type="text" id="agentpay" value={formatCOP(agentPay)} readOnly />
+          </div>
+          <div>
+            <label htmlFor="interestpaytoflor">Payments Interets: </label>
+            <input type="text" id="isterestPayToFlor" value={formatCOP(interestPayToFlor)} readOnly />
+          </div>
+          <br />
+          <div>
+            <label htmlFor="realProfit">Ganancia: </label>
+            <input type="text" id="realProfit" value={formatCOP(realProfit)} readOnly />
+          </div>
+          <div>
+            <label htmlFor="monthlyProfit">Ganancia Mensual: </label>
+            <input type="text" id="monthlyProfit" value={formatCOP(monthlyProfit)} readOnly />
+          </div>
+          <div>
+            <label htmlFor="monthlyProfit">Ganancia Semanal: </label>
+            <input type="text" id="monthlyProfit" value={formatCOP(weeklyProfit)} readOnly />
+          </div>
+        </div>
+      )}
 
       {capitalToCredit && (
         <div>
