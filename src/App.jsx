@@ -1,4 +1,4 @@
-import CreditSimulator from "./components/InputValue";
+import CreditSimulator from "./components/CreditSumulator";
 
 function App() {
   return (
