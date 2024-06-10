@@ -11,7 +11,12 @@ const CreditSimulator = () => {
   const [halfAmountRaw, setHalfAmountRaw] = useState("");
   const [capitalToCredit, setCapitalToCredit] = useState("");
   const [allRisckSecure, setAllRisckSecure] = useState("");
-  
+  const [totalInterest, setTotalInterest] = useState("");
+  const [interest, setInterst] = useState("");
+  const [payTotalCredit, setPayTotalCredit] = useState("");
+  const [phoneValue, setPhoneValue] = useState("");
+  const [monthCoute, setMonthCuote] = useState("");
+
   const tenPercent = 0.1;
   const monthlyInterest = 0.04;
 
@@ -63,9 +68,19 @@ const CreditSimulator = () => {
     const optional = parseInt(optionalAmountRaw, 10) || 0;
     const capitalToCredit = amount - half - optional;
     const allRisckSecure = installmentsValue * 5320;
+    const totalInterest =( installmentsValue * monthlyInterest) + tenPercent;
+    const interest = totalInterest * capitalToCredit;
+    const payTotalInterest = capitalToCredit + allRisckSecure + interest;
+    const phoneValue = amount + interest;
+    const monthCoute = payTotalInterest / installmentsValue;
     console.log(installmentsValue);
     setCapitalToCredit(formatCOP(capitalToCredit.toString()));
-    setAllRisckSecure(formatCOP(allRisckSecure.toString()))
+    setAllRisckSecure(formatCOP(allRisckSecure.toString()));
+    setTotalInterest(totalInterest);
+    setInterst(interest);
+    setPayTotalCredit(formatCOP(payTotalInterest.toString()));
+    setPhoneValue(formatCOP(phoneValue.toString()));
+    setMonthCuote(monthCoute);
   };
 
   return (
@@ -143,13 +158,14 @@ const CreditSimulator = () => {
           />
         )}
       </div>
-
       <button onClick={calculateResult}>Calcular</button>
-
       {capitalToCredit && (
         <div>
+          <br />
           <div>
-            <label htmlFor="capitalToCreditFixed">Capital a crédito fixed:</label>
+            <label htmlFor="capitalToCreditFixed">
+              Capital a crédito fixed:
+            </label>
             <input
               type="text"
               id="capitalToCredit"
@@ -170,24 +186,73 @@ const CreditSimulator = () => {
             />
           </div>
           <div>
-          <label htmlFor="monthlyInterest">Interes mensual:</label>
-          <input
-          type="text"
-          id="monthlyinterest"
-          value={`${monthlyInterest * 100}%`}
-          readOnly
-          aria-label="Interes mensual" />
+            <label htmlFor="monthlyInterest">Interes mensual:</label>
+            <input
+              type="text"
+              id="monthlyinterest"
+              value={`${monthlyInterest * 100}%`}
+              readOnly
+              aria-label="Interes mensual"
+            />
           </div>
           <div>
             <label htmlFor="totalInterest">Total de interés</label>
             <input
-            type="text"
-            id="totalInterest"
-            readOnly
-            aria-label="Total interes" />
+              type="text"
+              id="totalInterest"
+              value={`${(totalInterest * 100).toFixed(2)}%`}
+              readOnly
+              aria-label="Total interes"
+            />
           </div>
-          
-          
+          <div>
+            <label htmlFor="interest">Interés</label>
+            <input
+              type="text"
+              id="interest"
+              readOnly
+              value={formatCOP(interest.toString())}
+              aria-label="Interest"
+            />
+          </div>
+          <div>
+            <label htmlFor="payToltaCredit">Pago Total a crédito</label>
+            <input
+              type="text"
+              id="totalpayinterest"
+              readOnly
+              value={payTotalCredit}
+              aria-label="payTotalInterest"
+            />
+          </div>
+          <div>
+            <label htmlFor="phoneValue">Valor del teléfono:</label>
+            <input
+              type="text"
+              id="phonevalue"
+              readOnly
+              value={phoneValue}
+              aria-label="phoneValue"
+            />
+          </div>
+          <br />
+          <div>
+            <td>
+              <tr></tr>
+              <tr>Pago Mensual</tr>
+              <tr>Pago Semanal</tr>
+            </td>
+            <td>
+              Tasa de Interés
+              <tr>{`${(interest / installmentsValue / 1e3).toFixed(2)} %`}</tr>
+              <tr>{`${(interest / installmentsValue / 4e3).toFixed(2)} %`}</tr>
+            </td>
+            <td>
+              Cuota
+              <tr>{formatCOP(monthCoute.toString())}</tr>
+              <tr>{formatCOP((monthCoute / 4).toString())}</tr>
+            </td>
+          </div>
         </div>
       )}
     </div>
