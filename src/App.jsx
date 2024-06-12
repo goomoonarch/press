@@ -4,7 +4,7 @@ import { Stylized } from "./components/Stylized";
 function App() {
   return (
     <>
-    <Stylized />
+      <Stylized />
     </>
   );
 }
