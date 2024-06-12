@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 export const CreditSimulator = () => {
   const [inputValue, setInputValue] = useState("");
   const [inputValueRaw, setInputValueRaw] = useState("");
-  const [optionalAmount, setOptionalAmount] = useState("");
+  const [optionalAmount, setOptionalAmount] = useState(0);
   const [optionalAmountRaw, setOptionalAmountRaw] = useState("");
   const [installmentsType, setInstallmentsType] = useState("select"); // 'select' or 'input'
   const [installmentsValue, setInstallmentsValue] = useState(6);
@@ -19,7 +19,6 @@ export const CreditSimulator = () => {
   const [weekelyInterest, setWeekelyInterest] = useState("");
   const [monthlyCuota, setMonthlyCuota] = useState("");
   const [weekelyCuota, setWeekelyCuota] = useState("");
-
 
   //Admin mode
   const [adminMode, setAdminMode] = useState(false);
@@ -86,7 +85,23 @@ export const CreditSimulator = () => {
   };
 
   const handleAdminMode = () => {
-    setAdminMode(true);
+    if (
+      inputValueRaw &&
+      optionalAmountRaw &&
+      installmentsValue &&
+      parseInt(installmentsValue, 10) > 0
+    ) {
+      const password = prompt("Ingrese la contraseña para Admin Mode:");
+      if (password === "2505") {
+        setAdminMode(true);
+      } else {
+        alert("Contraseña incorrecta.");
+      }
+    } else {
+      alert(
+        "Por favor, complete todos los campos antes de ingresar al modo administrador."
+      );
+    }
   };
 
   const calculateResult = () => {
@@ -94,6 +109,7 @@ export const CreditSimulator = () => {
     const half = parseInt(halfAmountRaw, 10) || 0;
     const optional = parseInt(optionalAmountRaw, 10) || 0;
     const installments = parseInt(installmentsValue, 10) || 0;
+    const phoneCostValue = parseInt(phoneCost, 10) || 0;
 
     if (amount === 0 || half + optional > amount) {
       return;
@@ -109,15 +125,6 @@ export const CreditSimulator = () => {
     const weekelyInterest = monthlyInterestTab / 4;
     const monthlyCuota = payTotalCredit / installments;
     const weekelyCuota = monthlyCuota / 4;
-    const restReturn = phoneCost - halfAmountRaw - optionalAmountRaw;
-    const capitalReturn = restReturn / monthlyCuota;
-    const brutalProfit = phoneValue - phoneCost;
-    const phoneRisk = capitalToCredit * 0.25;
-    const agentPay = amount * 0.14;
-    const payInterestToFlor = restReturn * 0.0225 * installmentsValue;
-    const realProfit = brutalProfit - phoneRisk - agentPay - payInterestToFlor - phoneExpense;
-    const monthlyProfit = realProfit / installmentsValue;
-    const weeklyProfit = monthlyProfit / 4;
 
     setCapitalToCredit(formatCOP(capitalToCredit.toString()));
     setAllRiskSecure(formatCOP(allRiskSecure.toString()));
@@ -130,21 +137,40 @@ export const CreditSimulator = () => {
     setMonthlyCuota(formatCOP(monthlyCuota.toString()));
     setWeekelyCuota(formatCOP(weekelyCuota.toString()));
 
-    //admin mode
-    setRestReturn(restReturn);
-    setCapitalReturn(capitalReturn);
-    setBrutalProfit(brutalProfit);
-    setPhoneRisk(phoneRisk);
-    setAgentPay(agentPay);
-    setInterestPayToFlor(payInterestToFlor);
-    setRealProfit(realProfit);
-    setMonthlyProfit(monthlyProfit);
-    setWeeklyProfit(weeklyProfit);
+    if (adminMode && phoneCostValue > 0) {
+      const restReturn = phoneCostValue - half - optional;
+      const capitalReturn =
+        monthlyCuota !== 0 ? (restReturn / monthlyCuota).toFixed(2) : "0.00";
+      const brutalProfit = phoneValue - phoneCostValue;
+      const phoneRisk = capitalToCredit * 0.25;
+      const agentPay = amount * 0.14;
+      const payInterestToFlor = restReturn * 0.0225 * installmentsValue;
+      const realProfit =
+        brutalProfit - phoneRisk - agentPay - payInterestToFlor - phoneExpense;
+      const monthlyProfit = realProfit / installmentsValue;
+      const weeklyProfit = monthlyProfit / 4;
+
+      setRestReturn(formatCOP(restReturn.toString()));
+      setCapitalReturn(capitalReturn);
+      setBrutalProfit(formatCOP(brutalProfit.toString()));
+      setPhoneRisk(formatCOP(phoneRisk.toString()));
+      setAgentPay(formatCOP(agentPay.toString()));
+      setInterestPayToFlor(formatCOP(payInterestToFlor.toString()));
+      setRealProfit(formatCOP(realProfit.toString()));
+      setMonthlyProfit(formatCOP(monthlyProfit.toString()));
+      setWeeklyProfit(formatCOP(weeklyProfit.toString()));
+    }
   };
 
   useEffect(() => {
     calculateResult();
-  }, [inputValueRaw, optionalAmountRaw, installmentsValue, phoneCost]);
+  }, [
+    inputValueRaw,
+    optionalAmountRaw,
+    installmentsValue,
+    phoneCost,
+    adminMode,
+  ]);
 
   return (
     <div className="flex flex-col items-center">
@@ -152,6 +178,7 @@ export const CreditSimulator = () => {
       <div>
         <label htmlFor="amount">Monto de la compra:</label>
         <input
+          className="bg-[#F6F6F6] rounded-[8px] px-2"
           type="text"
           id="amount"
           value={inputValue}
@@ -235,45 +262,70 @@ export const CreditSimulator = () => {
           />
           <div>
             <label htmlFor="restunr">Faltante por recuperar:</label>
-            <input type="text" id="restReturn" value={formatCOP(restReturn)} readOnly />
+            <input type="text" id="restReturn" value={restReturn} readOnly />
           </div>
           <div>
             <label htmlFor="capitalreturn">Retorno de capital: </label>
-            <input type="text" id="capitalreturn" value={capitalReturn.toFixed(2)} readOnly />
+            <input
+              type="text"
+              id="capitalreturn"
+              value={capitalReturn}
+              readOnly
+            />
           </div>
           <br />
           <div>
             <label htmlFor="profit">Ganancia bruta: </label>
-            <input type="text" id="profit" value={formatCOP(brutalProfit)} readOnly />
+            <input type="text" id="profit" value={brutalProfit} readOnly />
           </div>
           <div>
             <label htmlFor="phoneexpense">Gasto del teléfono: </label>
-            <input type="text" id="phoneexpense" value={formatCOP(phoneExpense)} readOnly />
+            <input
+              type="text"
+              id="phoneexpense"
+              value={formatCOP(phoneExpense)}
+              readOnly
+            />
           </div>
           <div>
             <label htmlFor="phonerisk">Resgo de pérdida: </label>
-            <input type="text" id="phonerisk" value={formatCOP(phoneRisk)} readOnly />
+            <input type="text" id="phonerisk" value={phoneRisk} readOnly />
           </div>
           <div>
             <label htmlFor="agentpay">Pago agente: </label>
-            <input type="text" id="agentpay" value={formatCOP(agentPay)} readOnly />
+            <input type="text" id="agentpay" value={agentPay} readOnly />
           </div>
           <div>
             <label htmlFor="interestpaytoflor">Payments Interets: </label>
-            <input type="text" id="isterestPayToFlor" value={formatCOP(interestPayToFlor)} readOnly />
+            <input
+              type="text"
+              id="isterestPayToFlor"
+              value={interestPayToFlor}
+              readOnly
+            />
           </div>
           <br />
           <div>
             <label htmlFor="realProfit">Ganancia: </label>
-            <input type="text" id="realProfit" value={formatCOP(realProfit)} readOnly />
+            <input type="text" id="realProfit" value={realProfit} readOnly />
           </div>
           <div>
             <label htmlFor="monthlyProfit">Ganancia Mensual: </label>
-            <input type="text" id="monthlyProfit" value={formatCOP(monthlyProfit)} readOnly />
+            <input
+              type="text"
+              id="monthlyProfit"
+              value={monthlyProfit}
+              readOnly
+            />
           </div>
           <div>
-            <label htmlFor="monthlyProfit">Ganancia Semanal: </label>
-            <input type="text" id="monthlyProfit" value={formatCOP(weeklyProfit)} readOnly />
+            <label htmlFor="weeklyProfit">Ganancia Semanal: </label>
+            <input
+              type="text"
+              id="weeklyProfit"
+              value={weeklyProfit}
+              readOnly
+            />
           </div>
         </div>
       )}
@@ -312,16 +364,18 @@ export const CreditSimulator = () => {
               aria-label="Interés mensual"
             />
           </div>
-          <div>
-            <label htmlFor="totalInterest">Total de interés:</label>
-            <input
-              type="text"
-              id="totalInterest"
-              value={`${totalInterest}%`}
-              readOnly
-              aria-label="Total interés"
-            />
-          </div>
+          {adminMode && (
+            <div>
+              <label htmlFor="totalInterest">Total de interés:</label>
+              <input
+                type="text"
+                id="totalInterest"
+                value={`${totalInterest}%`}
+                readOnly
+                aria-label="Total interés"
+              />
+            </div>
+          )}
           <div>
             <label htmlFor="interest">Interés:</label>
             <input
@@ -354,21 +408,25 @@ export const CreditSimulator = () => {
           </div>
           <div>
             <br />
-            <td>
-              <tr></tr>
-              <tr>Pago mensual</tr>
-              <tr>pago semanal</tr>
-            </td>
-            <td>
-              Interés
-              <tr>{monthlyInterestTab}</tr>
-              <tr>{weekelyInterest}</tr>
-            </td>
-            <td>
-              Cuota
-              <tr>{monthlyCuota}</tr>
-              <tr>{weekelyCuota}</tr>
-            </td>
+            <table>
+              <tbody>
+                <tr>
+                  <td></td>
+                  <td>Pago mensual</td>
+                  <td>pago semanal</td>
+                </tr>
+                <tr>
+                  <td>Interés</td>
+                  <td>{monthlyInterestTab}</td>
+                  <td>{weekelyInterest}</td>
+                </tr>
+                <tr>
+                  <td>Cuota</td>
+                  <td>{monthlyCuota}</td>
+                  <td>{weekelyCuota}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       )}

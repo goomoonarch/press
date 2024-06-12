@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "NeueHaasDisplay";
+  src: url("./assets/fonts/NeueHaasDisplayBold.ttf") format("ttf");
+  font-weight: bold;
+}
