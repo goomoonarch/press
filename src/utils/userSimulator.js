@@ -10,9 +10,12 @@
       const monthlyProfit = realProfit / installmentsValue;
       const weeklyProfit = monthlyProfit / 4; */
 
-
-export const userSimulator = ({ amount, months, optionalAmount, phoneCost }) => {
-
+export const userSimulator = ({
+  amount,
+  months,
+  optionalAmount,
+  phoneCost,
+}) => {
   let c2c = amount - amount * 0.5 - optionalAmount;
   let aRs = months * 5320;
   let Ti = months * 0.04 + 0.1; //---> adminMode
@@ -31,9 +34,11 @@ export const userSimulator = ({ amount, months, optionalAmount, phoneCost }) => 
   let cReturn = months !== 0 ? (rReturn / mCuota).toFixed(2) : "0.00";
   let bProfit = phoneV - phoneCost;
   let pRisk = c2c * 0.25;
-
-
-
+  let agentP = amount * 0.14;
+  let pitf = rReturn * 0.0225 * months;
+  let realP = bProfit - pRisk - agentP - pitf - 50000;
+  let mProfit = realP / months;
+  let wProfit = mProfit / 4;
 
   return {
     c2c,
@@ -50,5 +55,10 @@ export const userSimulator = ({ amount, months, optionalAmount, phoneCost }) => 
     cReturn,
     bProfit,
     pRisk,
+    agentP,
+    pitf,
+    realP,
+    mProfit,
+    wProfit,
   };
 };

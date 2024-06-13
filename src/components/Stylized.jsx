@@ -16,6 +16,7 @@ export const Stylized = () => {
   const [phoneCost, setPhoneCost] = useState(0);
   const [showPhoneCost, setShowPhoneCost] = useState(false);
   const [showUserInfo, setShowUserInfo] = useState(false);
+  const [showAdminInfo, setShowAdminInfo] = useState(false);
   const captureRef = useRef(null);
 
   const handleAdminMode = (adminState) => setAdminMode(adminState);
@@ -28,7 +29,14 @@ export const Stylized = () => {
       setShowUserInfo(false);
     }
   };
-  const handlePhoneCost = (phoneCost) => setPhoneCost(phoneCost);
+  const handlePhoneCost = (phoneCost) => {
+    setPhoneCost(phoneCost);
+    if (phoneCost !== "") {
+      setShowAdminInfo(true);
+    } else {
+      setShowAdminInfo(false);
+    }
+  };
 
   useEffect(() => {
     if (adminMode) {
@@ -73,8 +81,8 @@ export const Stylized = () => {
             onAnimationComplete={() => setShowPhoneCost(false)}
           />
         )}
+        {showAdminInfo && <AdminInfo inputs={{ ...initInputs, phoneCost }} />}
         {showUserInfo && <UserInfo inputs={initInputs} />}
-        <AdminInfo  inputs={{ ...initInputs, phoneCost }}/>
         {showUserInfo && (
           <button
             onClick={handleCaptureClick}
