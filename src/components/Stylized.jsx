@@ -7,6 +7,7 @@ import { PhoneCost } from "./PhoneCost";
 import { UserInfo } from "./UserInfo";
 import { Fotter } from "./Fotter";
 import { saveprint } from "../assets";
+import { AdminInfo } from "./AdminInfo";
 
 export const Stylized = () => {
   const [adminMode, setAdminMode] = useState(false);
@@ -73,6 +74,7 @@ export const Stylized = () => {
           />
         )}
         {showUserInfo && <UserInfo inputs={initInputs} />}
+        <AdminInfo  inputs={{ ...initInputs, phoneCost }}/>
         {showUserInfo && (
           <button
             onClick={handleCaptureClick}
