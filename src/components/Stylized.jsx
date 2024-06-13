@@ -11,6 +11,7 @@ import { saveprint } from "../assets";
 export const Stylized = () => {
   const [adminMode, setAdminMode] = useState(false);
   const [initInputs, setInitInputs] = useState({});
+  // eslint-disable-next-line no-unused-vars
   const [phoneCost, setPhoneCost] = useState(0);
   const [showPhoneCost, setShowPhoneCost] = useState(false);
   const [showUserInfo, setShowUserInfo] = useState(false);
