@@ -2,8 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  img {
+    @apply inline-block;
+  }
+}
+
 @font-face {
   font-family: "NeueHaasDisplay";
   src: url("./assets/fonts/NeueHaasDisplayBold.ttf") format("ttf");
   font-weight: bold;
+}
+
+.row {
+  letter-spacing: 0.16em;
+  background-color: #f6f6f6;
+  width: 120px;
+  height: 35px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
 }

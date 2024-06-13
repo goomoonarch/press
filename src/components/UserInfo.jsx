@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { useEffect, useRef } from "react";
 import { AmountInput } from "./AmountInput";
 import { userSimulator } from "../utils";
+import { UserTable } from "./UserTable";
 
 const aval = 0.1;
 const percentMonth = 0.04;
@@ -10,6 +11,8 @@ const percentMonth = 0.04;
 export const UserInfo = ({ inputs }) => {
   const { aRs, c2c, inter, mCuota, mItab, pTc, phoneV, wCuota, wItab } =
     userSimulator(inputs);
+
+  const TablerInfo = { mCuota, mItab, wCuota, wItab };
 
   const avalRef = useRef(null);
   const dispRef = useRef(null);
@@ -26,10 +29,29 @@ export const UserInfo = ({ inputs }) => {
       y: -20,
       duration: 0.3,
     });
+
+    gsap.fromTo(
+      dispRef.current.children,
+      { y: 10, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.25,
+        ease: "power3.out",
+        stagger: 0.1,
+        onComplete: () => {
+          gsap.to(dispRef.current.children, {
+            y: 0,
+            ease: "bounce.out",
+            duration: 0.6,
+          });
+        },
+      }
+    );
   }, []);
 
   return (
-    <div ref={dispRef} className="flex flex-col  mt-8">
+    <div ref={dispRef} className="flex flex-col mt-8">
       <div className="flex justify-between">
         <div
           className={`bg-[#f6f6f6] w-[74px] mr-[8px] rounded-[6px] flex justify-center`}
@@ -115,6 +137,8 @@ export const UserInfo = ({ inputs }) => {
           label="V. Teléfono en COP"
         />
       </div>
+      <br />
+      <UserTable info={TablerInfo} />
     </div>
   );
 };

@@ -6,8 +6,8 @@ import gsap from "gsap";
 export const InputValues = ({ onChangeUserInputs }) => {
   const otherRef = useRef(null);
   /**InputAmountComponent */
-  const [amount, setAmount] = useState(0);
-  const [optionalAmount, setOptionalAmount] = useState(0);
+  const [amount, setAmount] = useState("");
+  const [optionalAmount, setOptionalAmount] = useState("");
 
   /**CustomMonthSelectComponent */
   const [months, setMonths] = useState(6);
@@ -45,6 +45,9 @@ export const InputValues = ({ onChangeUserInputs }) => {
 
   const handleAmountChange = (newAmount) => {
     setAmount(newAmount);
+    if (newAmount === "") {
+      setOptionalAmount("");
+    }
   };
 
   return (
