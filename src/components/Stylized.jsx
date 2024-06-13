@@ -1,23 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Hero } from "./Hero";
-import { InputValue } from "./InputValue";
+import { InputValues } from "./InputValues";
 import { UnlockAdmin } from "./UnlockAdmin";
+import { PhoneCost } from "./PhoneCost";
+import { UserInfo } from "./UserInfo";
 
 export const Stylized = () => {
   const [adminMode, setAdminMode] = useState(false);
-  const [amount, setAmount] = useState("");
+  const [initInputs, setInitInputs] = useState({});
+  const [phoneCost, setPhoneCost] = useState(0);
+  const [showPhoneCost, setShowPhoneCost] = useState(false);
+  const [showUserInfo, setShowUserInfo] = useState(false);
 
   const handleAdminMode = (adminState) => setAdminMode(adminState);
-  const handleAmountValue = (amountValue) => setAmount(amountValue);
+  const handleAmountValue = (initialInputs) => {
+    setInitInputs(initialInputs);
+    const { amount } = initialInputs;
+    if (amount !== "" ) {
+      setShowUserInfo(true);
+    } else {
+      setShowUserInfo(false);
+    }
+  };
+  const handlePhoneCost = (phoneCost) => setPhoneCost(phoneCost);
 
-  console.log(adminMode);
-  console.log(amount);
+  useEffect(() => {
+    if (adminMode) {
+      setShowPhoneCost(true);
+    }
+  }, [adminMode]);
 
   return (
     <div className="flex flex-col justify-center items-center">
       <Hero />
       <UnlockAdmin onAdminMode={handleAdminMode} />
-      <InputValue onChangeUserInputs={handleAmountValue}/>
+      <InputValues onChangeUserInputs={handleAmountValue} />
+      {showPhoneCost && (
+        <PhoneCost
+          adminState={adminMode}
+          onChangePhoneCost={handlePhoneCost}
+          onAnimationComplete={() => setShowPhoneCost(false)}
+        />
+      )}
+      {showUserInfo && <UserInfo inputs={initInputs} />}
     </div>
   );
 };

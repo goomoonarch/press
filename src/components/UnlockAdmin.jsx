@@ -67,6 +67,9 @@ export const UnlockAdmin = ({ onAdminMode }) => {
 
       if (!showPasswordInput) {
         setShowPasswordInput(true);
+        setTimeout(() => {
+          passRef.current.querySelector("input").focus();
+        }, 300);
 
         gsap.fromTo(
           passRef.current,
@@ -74,12 +77,20 @@ export const UnlockAdmin = ({ onAdminMode }) => {
           { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(1.7)" }
         );
       } else {
+        const input = passRef.current.querySelector("input");
+        input.focus();
         gsap.to(passRef.current, {
           x: 250,
           duration: 0.1,
           ease: "power1.inOut",
           yoyo: true,
           repeat: 5,
+          onUpdate: () => {
+            input.focus();
+          },
+          onComplete: () => {
+            input.focus();
+          },
         });
       }
     } else {
@@ -89,12 +100,18 @@ export const UnlockAdmin = ({ onAdminMode }) => {
   };
 
   const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+
+    if (newPassword.length === 4) {
+      setTimeout(() => {
+        handlePasswordSubmit(newPassword);
+      }, 100);
+    }
   };
 
-  const handlePasswordSubmit = (e) => {
-    e.preventDefault();
-    if (password === "2505") {
+  const handlePasswordSubmit = (inputPassword) => {
+    if (inputPassword === "2505") {
       gsap.to(passRef.current, {
         scale: 0,
         opacity: 0,
@@ -127,14 +144,14 @@ export const UnlockAdmin = ({ onAdminMode }) => {
   };
 
   return (
-    <div>
+    <div className="mb-5">
       <div
         ref={passRef}
         className="absolute translate-y-[-32px] translate-x-[240px]"
       >
         {showPasswordInput && (
           <form
-            onSubmit={handlePasswordSubmit}
+            onSubmit={(e) => e.preventDefault()}
             className="flex justify-end mb-2"
           >
             <input
@@ -170,7 +187,7 @@ export const UnlockAdmin = ({ onAdminMode }) => {
           <div className="bg-[#f6f6f6] w-[40px] h-[20px] rounded-full flex items-center">
             <div
               ref={toggle}
-              className="bg-[#d9d9d9] w-[16px] h-[12px] rounded-full"
+              className="bg-[#d9d9d9] w-[16px] h-[12px] rounded-full translate-x-[6px]"
             ></div>
           </div>
         </div>

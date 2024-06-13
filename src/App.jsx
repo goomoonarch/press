@@ -1,4 +1,4 @@
-//import CreditSimulator from "./components/CreditSumulator";
+import CreditSimulator from "./components/CreditSumulator";
 import { Stylized } from "./components/Stylized";
 
 function App() {
