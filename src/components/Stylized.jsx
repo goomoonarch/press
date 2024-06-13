@@ -81,7 +81,7 @@ export const Stylized = () => {
             onAnimationComplete={() => setShowPhoneCost(false)}
           />
         )}
-        {showAdminInfo && <AdminInfo inputs={{ ...initInputs, phoneCost }} />}
+        {(adminMode && showAdminInfo) && <AdminInfo inputs={{ ...initInputs, phoneCost }} />}
         {showUserInfo && <UserInfo inputs={initInputs} />}
         {showUserInfo && (
           <button
