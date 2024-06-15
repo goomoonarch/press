@@ -6,9 +6,15 @@ import gsap from "gsap";
 
 export const AdminInfo = ({ inputs }) => {
   const cReturnRef = useRef(null);
+  const percentMonthRef = useRef(null);
 
   useEffect(() => {
     gsap.to(cReturnRef.current, {
+      opacity: 0.75,
+      y: -20,
+      duration: 0.3,
+    });
+    gsap.to(percentMonthRef.current, {
       opacity: 0.75,
       y: -20,
       duration: 0.3,
@@ -59,15 +65,35 @@ export const AdminInfo = ({ inputs }) => {
       </div>
       <br />
       <div className="flex flex-col mt-[24px]">
-        <AmountInput
-          value={bProfit}
-          onChange={() => {}}
-          inputWidth="w-full"
-          divWidth="w-[320px]"
-          onlyRead={true}
-          placeholder="$ Profit"
-          label="Ganancia bruta en COP"
-        />
+        <div className="flex justify-between">
+          <AmountInput
+            value={bProfit}
+            onChange={() => {}}
+            inputWidth="w-full"
+            divWidth="w-[238px]"
+            onlyRead={true}
+            placeholder="$ Profit"
+            label="Ganancia bruta en COP"
+          />
+          <div
+            className={`bg-[#f6f6f6] w-[74px] ml-[8px] rounded-[6px] flex justify-center`}
+          >
+            <div
+              ref={percentMonthRef}
+              className="absolute translate-x-[-8px] text-[14px] font-neue opacity-0 text-[#444444] -z-10"
+            >
+              Interés/M
+            </div>
+            <input
+              type="text"
+              id="percentmoth"
+              value="4%"
+              readOnly
+              className="bg-[#f6f6f6] w-[40px] h-[35px] text-center font-neue focus:outline-none tracking-[.16em] text-[#444444]"
+            />
+          </div>
+        </div>
+
         <div className="flex justify-between mt-[24px]">
           <AmountInput
             value={50000}
@@ -121,7 +147,7 @@ export const AdminInfo = ({ inputs }) => {
           label="Ganancia en COP"
         />
         <div className="flex justify-between mt-[24px]">
-        <AmountInput
+          <AmountInput
             value={mProfit}
             onChange={() => {}}
             inputWidth="w-full"

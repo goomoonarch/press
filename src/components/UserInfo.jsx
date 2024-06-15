@@ -5,9 +5,6 @@ import { AmountInput } from "./AmountInput";
 import { userSimulator } from "../utils";
 import { UserTable } from "./UserTable";
 
-const aval = 0.1;
-const percentMonth = 0.04;
-
 export const UserInfo = ({ inputs }) => {
   const { aRs, c2c, inter, mCuota, mItab, pTc, phoneV, wCuota, wItab } =
     userSimulator(inputs);
@@ -16,7 +13,7 @@ export const UserInfo = ({ inputs }) => {
 
   const avalRef = useRef(null);
   const dispRef = useRef(null);
-  const percentMonthRef = useRef(null);
+  
 
   useEffect(() => {
     gsap.to(avalRef.current, {
@@ -24,11 +21,7 @@ export const UserInfo = ({ inputs }) => {
       y: -20,
       duration: 0.3,
     });
-    gsap.to(percentMonthRef.current, {
-      opacity: 0.75,
-      y: -20,
-      duration: 0.3,
-    });
+
 
     gsap.fromTo(
       dispRef.current.children,
@@ -65,11 +58,22 @@ export const UserInfo = ({ inputs }) => {
           <input
             type="text"
             id="aval"
-            value={`${aval * 100}%`}
+            value="10%"
             readOnly
-            className="bg-[#f6f6f6] w-[40px] h-[35px] text-center font-neue focus:outline-none tracking-[.16em]"
+            className="bg-[#f6f6f6] w-[40px] h-[35px] text-center font-neue focus:outline-none tracking-[.16em] text-[#444444]"
           />
         </div>
+        <AmountInput
+          value={c2c}
+          onChange={() => {}}
+          inputWidth="w-full"
+          divWidth="w-[238px]"
+          onlyRead={true}
+          placeholder="$ Capital a crédito en COP"
+          label="Cap. a crédito en COP"
+        />
+      </div>
+      <div className="flex justify-between mt-[24px]">
         <AmountInput
           value={aRs}
           onChange={() => {}}
@@ -79,34 +83,7 @@ export const UserInfo = ({ inputs }) => {
           placeholder="$ Capital a crédito en COP"
           label="S. Todo riesgo COP"
         />
-        <div
-          className={`bg-[#f6f6f6] w-[74px] ml-[8px] rounded-[6px] flex justify-center`}
-        >
-          <div
-            ref={percentMonthRef}
-            className="absolute translate-x-[-8px] text-[14px] font-neue opacity-0 text-[#444444] -z-10"
-          >
-            Interés/M
-          </div>
-          <input
-            type="text"
-            id="percentmoth"
-            value={`${percentMonth * 100}%`}
-            readOnly
-            className="bg-[#f6f6f6] w-[40px] h-[35px] text-center font-neue focus:outline-none tracking-[.16em]"
-          />
-        </div>
-      </div>
-      <div className="flex justify-between mt-[24px]">
-        <AmountInput
-          value={c2c}
-          onChange={() => {}}
-          inputWidth="w-full"
-          divWidth="w-[156px]"
-          onlyRead={true}
-          placeholder="$ Capital a crédito en COP"
-          label="Cap. a crédito en COP"
-        />
+
         <AmountInput
           value={inter}
           onChange={() => {}}

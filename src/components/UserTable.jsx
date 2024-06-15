@@ -28,10 +28,10 @@ export const UserTable = ({ info }) => {
       <div className="opacity-75 text-[14px]">Tabla de pagos</div>
       <div
         ref={tableRef}
-        className="flex flex-col bg-[#FDFDFD] rounded-[8px] p-2"
+        className="flex flex-col bg-[#FDFDFD] rounded-[8px] p-2 ring-2 ring-[#f2cb577d]"
       >
         <div className="flex items-center justify-between">
-          <div className="h-[35px] w-[60.5px] flex items-end">
+          <div className="h-[24px] w-[60.5px] flex items-end">
           <img
             src={dollar}
             alt="dollarfillicon"
@@ -39,10 +39,10 @@ export const UserTable = ({ info }) => {
           />
           </div>
  
-          <div className="h-[35px] w-[113px] ml-[8px] flex items-end text-[15px]">
+          <div className="h-[24px] w-[113px] ml-[8px] flex items-end text-[15px]">
             Pago Mensual
           </div>
-          <div className="h-[35px] w-[113px] ml-[8px] flex items-end text-[15px]">
+          <div className="h-[24px] w-[113px] ml-[8px] flex items-end text-[15px]">
             Pago Semanal
           </div>
         </div>

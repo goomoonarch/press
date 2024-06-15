@@ -2,7 +2,7 @@ export const Fotter = () => {
   return (
     <div className="font-Inter leading-4 my-8 w-[320px]">
       <p className="text-center">
-        v1.0.2.1
+        v1.0.2.3
         <span>
           {" "}
           Build with 💖 for the Celupremium team by{" "}

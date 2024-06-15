@@ -21,14 +21,14 @@ export const InputValues = ({ onChangeUserInputs }) => {
   const handleTwoFocus = () => setIsTwoFocused(true);
   const handleTwoBlur = () => setIsTwoFocused(false);
 
-  const zeroCuote = amount ? amount / 2 : 0;
+  const zeroCuote = amount ? amount / 2 : "";
 
   useEffect(() => {
     onChangeUserInputs({ amount, months, optionalAmount, zeroCuote });
   }, [amount, months, optionalAmount]);
 
   useEffect(() => {
-    if (amount && !optionalAmount) {
+    if (amount && optionalAmount) {
       gsap.to(otherRef.current, {
         marginTop: "24px",
         duration: 0.3,
@@ -47,6 +47,8 @@ export const InputValues = ({ onChangeUserInputs }) => {
     setAmount(newAmount);
     if (newAmount === "") {
       setOptionalAmount("");
+    } else {
+      setOptionalAmount("0");
     }
   };
 
@@ -97,7 +99,7 @@ export const InputValues = ({ onChangeUserInputs }) => {
           inputWidth="w-full"
           divWidth="w-[156px]"
           onlyRead={amount ? false : true}
-          xOffset="traslate-x-[20px]"
+          xOffset="translate-x-[20px]"
           placeholder="$ Monto opcional"
           label="Monto opcional"
         />

@@ -86,7 +86,7 @@ export const Stylized = () => {
         {showUserInfo && (
           <button
             onClick={handleCaptureClick}
-            className="mt-2 bg-[#f6f6f6] rounded-[6px] hover:ring-2 hover:ring-[#F2CB57] focus:ring-2 focus:ring-[#F2CB57] transition duration-150"
+            className="mt-6 bg-[#f6f6f6] rounded-[6px] hover:ring-2 hover:ring-[#F2CB57] focus:ring-2 focus:ring-[#F2CB57] transition duration-150"
           >
             <div className="w-[52px] h-[40px] flex justify-center items-center">
               <img src={saveprint} alt="saveprint" />

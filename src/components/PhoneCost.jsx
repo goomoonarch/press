@@ -9,7 +9,7 @@ export const PhoneCost = ({
   onAnimationComplete,
 }) => {
   const costRef = useRef(null);
-  const [phoneCost, setPhoneCost] = useState(0);
+  const [phoneCost, setPhoneCost] = useState("");
 
   const handlePhoneCost = (newCost) => {
     setPhoneCost(newCost);

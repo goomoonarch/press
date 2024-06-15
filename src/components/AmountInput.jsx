@@ -16,7 +16,7 @@ export const AmountInput = ({
   const amountRef = useRef(null);
 
   useEffect(() => {
-    if (value) {
+    if (value !== "") {
       gsap.to(amountRef.current, {
         opacity: 0.75,
         y: -20,
@@ -34,7 +34,7 @@ export const AmountInput = ({
   const handleAmountChange = (e) => {
     const rawAmount = e.target.value.replace(/[^0-9]/g, "");
     onChange(rawAmount);
-    if (rawAmount) {
+    if (rawAmount !== "") {
       gsap.to(amountRef.current, {
         opacity: 0.75,
         y: -20,
@@ -69,7 +69,7 @@ export const AmountInput = ({
         <input
           type="text"
           placeholder={placeholder}
-          value={formatCOP(value).toString()}
+          value={value === "" ? "" : formatCOP(value).toString()}
           onChange={onlyRead ? undefined : handleAmountChange}
           onFocus={onlyRead ? undefined : handleFocus}
           onBlur={onlyRead ? undefined : handleBlur}
