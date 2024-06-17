@@ -1,19 +1,33 @@
 /* eslint-disable react/prop-types */
 import gsap from "gsap";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AmountInput } from "./AmountInput";
 import { userSimulator } from "../utils";
 import { UserTable } from "./UserTable";
 
 export const UserInfo = ({ inputs }) => {
-  const { aRs, c2c, inter, mCuota, mItab, pTc, phoneV, wCuota, wItab } =
-    userSimulator(inputs);
+  const [calculatedValues, setCalculatedValues] = useState({
+    c2c: 0,
+    aRs: 0,
+    inter: 0,
+    mCuota: 0,
+    mItab: 0,
+    pTc: 0,
+    phoneV: 0,
+    wCuota: 0,
+    wItab: 0,
+  });
 
-  const TablerInfo = { mCuota, mItab, wCuota, wItab };
+  useEffect(() => {
+    const values = userSimulator(inputs);
+    setCalculatedValues(values);
+  }, [inputs]);
+
+  const { c2c, aRs, inter, mCuota, mItab, pTc, phoneV, wCuota, wItab } =
+    calculatedValues;
 
   const avalRef = useRef(null);
   const dispRef = useRef(null);
-  
 
   useEffect(() => {
     gsap.to(avalRef.current, {
@@ -21,7 +35,6 @@ export const UserInfo = ({ inputs }) => {
       y: -20,
       duration: 0.3,
     });
-
 
     gsap.fromTo(
       dispRef.current.children,
@@ -115,7 +128,7 @@ export const UserInfo = ({ inputs }) => {
         />
       </div>
       <br />
-      <UserTable info={TablerInfo} />
+      <UserTable info={{ mCuota, mItab, wCuota, wItab }} />
     </div>
   );
 };

@@ -1,3 +1,4 @@
+/* eslint-disable no-self-assign */
 /* eslint-disable react/prop-types */
 import { useEffect, useRef, useState } from "react";
 import { AmountInput } from "./AmountInput";
@@ -14,12 +15,30 @@ export const InputValues = ({ onChangeUserInputs }) => {
   const [isTwoFocused, setIsTwoFocused] = useState(false);
 
   const handleMonthsChange = (e) => {
-    const rawMonths = e.target.value.replace(/[^0-9]/g, "");
-    setMonths(rawMonths);
+    let rawMonths = e.target.value.replace(/[^0-9]/g, "");
+    if (rawMonths === "") {
+      setMonths(""); 
+    } else {
+      rawMonths = parseInt(rawMonths, 10);
+      if (rawMonths > 12) {
+        rawMonths = 12;
+      } else if (rawMonths < 1) {
+        rawMonths = rawMonths;
+      }
+      setMonths(rawMonths);
+    }
   };
 
   const handleTwoFocus = () => setIsTwoFocused(true);
-  const handleTwoBlur = () => setIsTwoFocused(false);
+  const handleTwoBlur = () => {
+    setIsTwoFocused(false);
+    // Validate months on blur
+    if (months === "" || months < 1) {
+      setMonths(1);
+    } else if (months > 12) {
+      setMonths(12);
+    }
+  };
 
   const zeroCuote = amount ? amount / 2 : "";
 

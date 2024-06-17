@@ -1,21 +1,12 @@
-/**const restReturn = phoneCostValue - half - optional;
-      const capitalReturn =
-        monthlyCuota !== 0 ? (restReturn / monthlyCuota).toFixed(2) : "0.00";
-      const brutalProfit = phoneValue - phoneCostValue;
-      const phoneRisk = capitalToCredit * 0.25;
-      const agentPay = amount * 0.14;
-      const payInterestToFlor = restReturn * 0.0225 * installmentsValue;
-      const realProfit =
-        brutalProfit - phoneRisk - agentPay - payInterestToFlor - phoneExpense;
-      const monthlyProfit = realProfit / installmentsValue;
-      const weeklyProfit = monthlyProfit / 4; */
-
 export const userSimulator = ({
   amount,
   months,
   optionalAmount,
   phoneCost,
 }) => {
+  const validateValue = (value) =>
+    isNaN(value) || !isFinite(value) ? 0 : value;
+
   let c2c = amount - amount * 0.5 - optionalAmount;
   let aRs = months * 5320;
   let Ti = months * 0.04 + 0.1; //---> adminMode
@@ -41,24 +32,24 @@ export const userSimulator = ({
   let wProfit = mProfit / 4;
 
   return {
-    c2c,
-    aRs,
-    Ti,
-    inter,
-    pTc,
-    phoneV,
-    mItab,
-    wItab,
-    mCuota,
-    wCuota,
-    rReturn,
-    cReturn,
-    bProfit,
-    pRisk,
-    agentP,
-    pitf,
-    realP,
-    mProfit,
-    wProfit,
+    c2c: validateValue(c2c),
+    aRs: validateValue(aRs),
+    Ti: validateValue(Ti),
+    inter: validateValue(inter),
+    pTc: validateValue(pTc),
+    phoneV: validateValue(phoneV),
+    mItab: validateValue(mItab),
+    wItab: validateValue(wItab),
+    mCuota: validateValue(mCuota),
+    wCuota: validateValue(wCuota),
+    rReturn: validateValue(rReturn),
+    cReturn: validateValue(cReturn),
+    bProfit: validateValue(bProfit),
+    pRisk: validateValue(pRisk),
+    agentP: validateValue(agentP),
+    pitf: validateValue(pitf),
+    realP: validateValue(realP),
+    mProfit: validateValue(mProfit),
+    wProfit: validateValue(wProfit),
   };
 };

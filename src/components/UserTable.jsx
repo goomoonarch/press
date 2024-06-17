@@ -1,9 +1,9 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { dollar } from "../assets";
 import { formatCOP } from "../utils";
 
-/* eslint-disable react/prop-types */
 export const UserTable = ({ info }) => {
   const { mCuota, mItab, wCuota, wItab } = info;
   const tableRef = useRef(null);
@@ -23,8 +23,15 @@ export const UserTable = ({ info }) => {
     );
   }, []);
 
+  const safeFormatCOP = (value) => {
+    if (isNaN(value) || !isFinite(value)) {
+      return formatCOP(0);
+    }
+    return formatCOP(value);
+  };
+
   return (
-    <div className="flex flex-col font-neue text-[#444444] ">
+    <div className="flex flex-col font-neue text-[#444444]">
       <div className="opacity-75 text-[14px]">Tabla de pagos</div>
       <div
         ref={tableRef}
@@ -32,13 +39,12 @@ export const UserTable = ({ info }) => {
       >
         <div className="flex items-center justify-between">
           <div className="h-[24px] w-[60.5px] flex items-end">
-          <img
-            src={dollar}
-            alt="dollarfillicon"
-            className="h-[24px] w-[24px]"
-          />
+            <img
+              src={dollar}
+              alt="dollarfillicon"
+              className="h-[24px] w-[24px]"
+            />
           </div>
- 
           <div className="h-[24px] w-[113px] ml-[8px] flex items-end text-[15px]">
             Pago Mensual
           </div>
@@ -51,10 +57,10 @@ export const UserTable = ({ info }) => {
             Interés
           </div>
           <div className="h-[35px] w-[113px] ml-[8px] bg-[#f6f6f6] rounded-[6px] tracking-[.16em] flex items-center pl-[10px]">
-            {formatCOP(mItab)}
+            {safeFormatCOP(mItab)}
           </div>
           <div className="h-[35px] w-[113px] ml-[8px] bg-[#f6f6f6] rounded-[6px] tracking-[.16em] flex items-center pl-[10px]">
-            {formatCOP(wItab)}
+            {safeFormatCOP(wItab)}
           </div>
         </div>
         <div className="flex items-center justify-between">
@@ -62,10 +68,10 @@ export const UserTable = ({ info }) => {
             Cuota
           </div>
           <div className="h-[35px] w-[113px] ml-[8px] bg-[#f6f6f6] rounded-[6px] tracking-[.16em] flex items-center pl-[10px]">
-            {formatCOP(mCuota)}
+            {safeFormatCOP(mCuota)}
           </div>
           <div className="h-[35px] w-[113px] ml-[8px] bg-[#f6f6f6] rounded-[6px] tracking-[.16em] flex items-center pl-[10px]">
-            {formatCOP(wCuota)}
+            {safeFormatCOP(wCuota)}
           </div>
         </div>
       </div>
