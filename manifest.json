@@ -1,6 +1,6 @@
 {
     "short_name": "App",
-    "name": "Tu Aplicación",
+    "name": "Press 56",
     "icons": [
       {
         "src": "/press_iOS_192x192.png",
@@ -13,7 +13,7 @@
         "type": "image/png"
       }
     ],
-    "start_url": ".",
+    "start_url": "https://goomoonarch.github.io/press/",
     "display": "standalone",
     "theme_color": "#000000",
     "background_color": "#ffffff"
